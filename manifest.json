@@ -1,0 +1,20 @@
+{
+  "name": "ChromeExtension",
+  "version": "1.0",
+  "description": "TODO",
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "https://www.google.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.com/*"],
+      "js": ["checker.js"]
+    }
+  ],
+  "manifest_version": 2
+}
