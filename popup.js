@@ -30,28 +30,35 @@
         });
     }
 
+    function initiateKeyStatus(key) {
+        // Initiating key statu
+        getCurrentQuery().then(query => {
+            const keyStatus = document.querySelector(`#keyStatus`);
+            if (keyStatus) {
+                keyStatus.innerText = "Key Status: " + (query === key.replace(/ /g, "+")).toString()
+            }
+        });
+    }
+
     function initiateField(name, value) {
         const field = document.querySelector(`#${name}`);
         field.value = value;
         field.addEventListener("input", event => {
             storeValue(name, event.target.value);
         });
+        return field;
     }
 
     document.addEventListener("DOMContentLoaded", () => {
         chrome.storage.local.get(["key", "url", "lastClick"], (result) => {
             const key = result.key ?? "";
             const url = result.url ?? "";
-            initiateField("key", key);
+            initiateField("key", key)
+                .addEventListener("input", event => {
+                    initiateKeyStatus(event.target.value);
+                });
             initiateField("url", url);
-
-            // Initiating key status
-            getCurrentQuery().then(query => {
-                const keyStatus = document.querySelector(`#keyStatus`);
-                if (keyStatus) {
-                    keyStatus.innerText = "Key Status: " + (query === key.replace(/ /g, "+")).toString()
-                }
-            });
+            initiateKeyStatus(key);
 
             // Initiating "google it" button
             document.querySelector(`#google`)
