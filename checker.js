@@ -20,9 +20,14 @@
      * @returns {Promise<void>}
      */
     async function onNavigation(event) {
-        if (isTrustworthfull(event)) {
-            alert("I trust you!");
-        }
+        chrome.storage.local.set(
+            {
+                lastClick: {
+                    date: new Date().toISOString(),
+                    isTrusted: await isTrustworthfull(event)
+                }
+            }
+        );
     }
 
     /**
@@ -44,13 +49,13 @@
      * @returns {boolean}
      */
     function queryIsValid(query) {
-        const encodedQuery = location.search
+        const decodedQuery = decodeURI(location.search)
             .replace(/^\?/, "")
             .split("&")
             .find(p => p.startsWith("q="))
             ?.replace(/^q=/, "");
 
-        return !!query && !!encodedQuery && query === decodeURI(encodedQuery);
+        return !!query && !!decodedQuery && query.replace(/ /g, "+") === decodedQuery;
     }
 
     /**

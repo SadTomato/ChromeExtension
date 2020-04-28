@@ -3,11 +3,19 @@
     <script type="application/javascript" charset="utf-8" src="popup.js"></script>
 </head>
 <body class="body-popup">
-<form>
+<div>
     <label for="key">Key</label>
     <input name="key" type="text" autocomplete="off" spellcheck="false" title="key" id="key"/>
+</div>
+<div>
+    <div id="keyStatus"></div>
+    <button id="google">Google it</button>
+</div>
+<div>
     <label for="url">URL</label>
     <input name="url" type="text" autocomplete="off" spellcheck="false" title="url" id="url"/>
-</form>
+</div>
+Last click:
+<div id="result"></div>
 </body>
 </html>
